@@ -46,12 +46,12 @@ export const Train: React.FC<TrainProps> = ({ firstStop, lastStop }) => {
   // console.log(data?.journeys.length);
   const circleRef = useRef<SVGCircleElement | null>(null);
   const journeys = data?.journeys;
-  console.log(data);
-  console.log('jorney', journeys);
+  // console.log(data);
+  // console.log('jorney', journeys);
 
   const leg = journeys?.[0]?.legs?.[0];
   const stopovers = leg?.stopovers;
-  console.log('stopovers', stopovers);
+  // console.log('stopovers', stopovers);
 
   const line = leg?.line?.id || '';
   const tripId = leg?.tripId || '';
@@ -100,9 +100,8 @@ export const Train: React.FC<TrainProps> = ({ firstStop, lastStop }) => {
   const findCurrentStop = () => {
     if (!stopovers || stopovers.length === 0) return null;
 
-    const nowUnix = Date.now(); // Current time in Unix time (milliseconds since epoch)
+    const nowUnix = Date.now();
 
-    // Loop through stopovers to find the current stop
     for (let i = 0; i < stopovers.length - 1; i++) {
       const currentStopDepartureUnix = stopovers[i].departure
         ? new Date(stopovers[i].departure).getTime()
@@ -110,11 +109,7 @@ export const Train: React.FC<TrainProps> = ({ firstStop, lastStop }) => {
       const nextStopDepartureUnix = stopovers[i + 1].departure
         ? new Date(stopovers[i + 1].departure).getTime()
         : null;
-      // console.log('planned', currentStopDepartureUnix);
-      // console.log('plannednx', nextStopDepartureUnix);
-      // console.log('now', nowUnix);
 
-      // Check if the current time is between the departure times of the current and next stop
       if (currentStopDepartureUnix && nextStopDepartureUnix) {
         if (
           nowUnix >= currentStopDepartureUnix &&
@@ -139,8 +134,10 @@ export const Train: React.FC<TrainProps> = ({ firstStop, lastStop }) => {
   };
 
   const currentStop = findCurrentStop();
-  console.log('current', currentStop?.stop);
 
+  const currentStopIndex = uEightStops.findIndex(
+    (stop) => stop.id === currentStop?.stop?.id
+  );
   useEffect(() => {
     if (!circleRef.current) {
       return;
@@ -148,27 +145,31 @@ export const Train: React.FC<TrainProps> = ({ firstStop, lastStop }) => {
 
     const tl = gsap.timeline({ repeatDelay: 1 });
 
-    uEightStops.forEach((stop) => {
-      const position = getStopCoordinates(Number(stop.id));
-      if (!position) {
-        return;
-      }
+    if (currentStopIndex !== -1) {
+      uEightStops.slice(currentStopIndex).forEach((stop) => {
+        const position = getStopCoordinates(Number(stop.id));
+        if (!position) {
+          return;
+        }
 
-      const animationDuration = Math.min(
-        Math.floor(durationInSeconds / uEightStops.length),
-        300
-      );
+        const animationDuration = Math.min(
+          Math.floor(
+            durationInSeconds / (uEightStops.length - currentStopIndex)
+          ),
+          300
+        );
 
-      tl.to(`#train_${id}_${line}`, {
-        cx: position.cx,
-        cy: position.cy,
-        duration: animationDuration,
-        delay: 1,
-        onComplete: onComplete,
-        onStart: onStart,
-        onInterrupt: onInterrupt,
+        tl.to(`#train_${id}_${line}`, {
+          cx: position.cx,
+          cy: position.cy,
+          duration: animationDuration,
+          delay: 1,
+          onComplete: onComplete,
+          onStart: onStart,
+          onInterrupt: onInterrupt,
+        });
       });
-    });
+    }
 
     return () => {
       tl.kill();

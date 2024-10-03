@@ -1,38 +1,14 @@
 import React, { useEffect } from 'react';
 import { Train } from '../Train/Train';
-import { gsap } from 'gsap';
-
-interface Stop {
-  id: string;
-  name: string;
-}
-interface PathFunction {
-  x0?: number;
-  x1?: number;
-  y0?: number;
-  y1?: number;
-  a?: { x: number; y: number };
-  b?: { x: number; y: number };
-  c?: { x: number; y: number };
-  d?: { x: number; y: number };
-  length?: number;
-}
-
-interface Properties {
-  length: number;
-  partial_lengths: number[];
-  functions: (PathFunction | null)[];
-  initial_point: {
-    x: number;
-    y: number;
-  };
-}
 
 interface LineBuilderProps {
-  stops: Stop[];
+  stops: { id: string; name: string }[];
   path: SVGPathElement;
   id: string;
-  properties: Properties;
+  properties: {
+    getTotalLength: () => number;
+    getPointAtLength: (length: number) => DOMPoint | null;
+  };
 }
 
 export const LineBuilder: React.FC<LineBuilderProps> = ({
@@ -43,21 +19,25 @@ export const LineBuilder: React.FC<LineBuilderProps> = ({
 }) => {
   const firstStop = stops[0];
   const lastStop = stops[stops.length - 1];
+
   useEffect(() => {
     if (!path) {
       return;
     }
-    const linePath = path;
-    const linePathParent = linePath.parentNode as SVGGElement;
+
+    const linePathParent = path.parentNode as SVGGElement;
     const lineLength = properties.getTotalLength();
-    const stopCount = stops.length;
-    const distanceBetweenElements = lineLength / (stopCount + 1);
+    const distanceBetweenElements = lineLength / (stops.length + 1);
     const stopsDataReverse = [...stops].reverse();
 
-    const createOrUpdateStop = (stop: Stop, point: DOMPoint) => {
+    const createOrUpdateStop = (
+      stop: { id: string; name: string },
+      point: DOMPoint
+    ) => {
       let circle = linePathParent.querySelector<SVGCircleElement>(
         `#stop_${stop.id}_${id}`
       );
+
       if (!circle) {
         circle = document.createElementNS(
           'http://www.w3.org/2000/svg',
@@ -78,27 +58,24 @@ export const LineBuilder: React.FC<LineBuilderProps> = ({
       let text = linePathParent.querySelector(`#text_${stop.id}_${id}`);
       if (!text) {
         text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-
         text.setAttribute('id', `text_${stop.id}_${id}`);
-        text.textContent = stop.name;
         linePathParent.appendChild(text);
       }
+
+      text.textContent = stop.name;
       text.setAttribute(
         'fill',
         import.meta.env.VITE_STATION_DOT_AND_TEXT_COLOR
       );
-      text.setAttribute('x', point.x.toString() + 5);
-      text.setAttribute('y', point.y.toString() + 5);
+      text.setAttribute('x', (point.x + 5).toString());
+      text.setAttribute('y', (point.y + 5).toString());
       text.setAttribute('text-anchor', 'start');
     };
 
     const updateStopPositions = () => {
       stopsDataReverse.forEach((stop, index) => {
         const distance = distanceBetweenElements * (index + 1);
-
-        const point = properties.getPointAtLength
-          ? properties.getPointAtLength(distance)
-          : null;
+        const point = properties.getPointAtLength(distance);
 
         if (point) {
           createOrUpdateStop(stop, point);
