@@ -1,0 +1,344 @@
+{
+  "journeys": [
+    {
+      "id": "1",
+      "type": "journey",
+      "journeys": [
+        {
+          "type": "journey",
+          "legs": [
+            {
+              "origin": {
+                "type": "stop",
+                "id": "900096101",
+                "name": "S+U Wittenau (Berlin)",
+                "location": {
+                  "type": "location",
+                  "id": "900096101",
+                  "latitude": 52.596451,
+                  "longitude": 13.335524
+                },
+                "products": {
+                  "suburban": true,
+                  "subway": true,
+                  "tram": false,
+                  "bus": true,
+                  "ferry": false,
+                  "express": false,
+                  "regional": false
+                },
+                "stationDHID": "de:11000:900096101"
+              },
+              "destination": {
+                "type": "stop",
+                "id": "900079221",
+                "name": "S+U Hermannstr. (Berlin)",
+                "location": {
+                  "type": "location",
+                  "id": "900079221",
+                  "latitude": 52.467546,
+                  "longitude": 13.431295
+                },
+                "products": {
+                  "suburban": true,
+                  "subway": true,
+                  "tram": false,
+                  "bus": true,
+                  "ferry": false,
+                  "express": false,
+                  "regional": false
+                },
+                "stationDHID": "de:11000:900079221"
+              },
+              "departure": "2024-10-03T12:56:00+02:00",
+              "plannedDeparture": "2024-10-03T12:56:00+02:00",
+              "departureDelay": 0,
+              "arrival": "2024-10-03T13:32:00+02:00",
+              "plannedArrival": "2024-10-03T13:32:00+02:00",
+              "arrivalDelay": 0,
+              "reachable": true,
+              "tripId": "1|57046|7|86|3102024",
+              "line": {
+                "type": "line",
+                "id": "u8",
+                "fahrtNr": "12033",
+                "name": "U8",
+                "public": true,
+                "adminCode": "BVU---",
+                "productName": "U",
+                "mode": "train",
+                "product": "subway",
+                "operator": {
+                  "type": "operator",
+                  "id": "berliner-verkehrsbetriebe",
+                  "name": "Berliner Verkehrsbetriebe"
+                },
+                "color": {
+                  "fg": "#fff",
+                  "bg": "#005b98"
+                }
+              },
+              "direction": "Hermannstraße",
+              "arrivalPlatform": "1",
+              "plannedArrivalPlatform": "1",
+              "arrivalPrognosisType": "prognosed",
+              "departurePlatform": "1",
+              "plannedDeparturePlatform": "1",
+              "departurePrognosisType": "prognosed",
+              "remarks": [
+                {
+                  "type": "hint",
+                  "code": "OPERATOR",
+                  "text": "BVG"
+                },
+                {
+                  "type": "hint",
+                  "code": "FK",
+                  "text": "Bicycle conveyance (S+U Wittenau (Berlin))"
+                },
+                {
+                  "type": "hint",
+                  "code": "FK",
+                  "text": "Bicycle conveyance (S+U Hermannstr. (Berlin))"
+                }
+              ],
+              "cycle": {
+                "min": 600,
+                "max": 600,
+                "nr": 13
+              }
+            }
+          ],
+          "refreshToken": "¶HKI¶T$A=1@O=S+U Wittenau (Berlin)@L=900096101@a=128@$A=1@O=S+U Hermannstr. (Berlin)@L=900079221@a=128@$202410031256$202410031332$      U8$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#0#SICT#0#AM#16433#AM2#0#RT#15#¶KCC¶I1ZFIzEjRVJHIzEjSElOIzAjRUNLIzEyMjk2fDEyMjk2fDEyMzMyfDEyMzMyfDB8MHwxNjV8MTIyODl8MXwwfDEwfDB8MHwtMjE0NzQ4MzY0OCNHQU0jMzEwMjQxMjU2IwpaI1ZOIzEjU1QjMTcyNzczOTg0MyNQSSMwI1pJIzU3MDQ2I1RBIzcjREEjMzEwMjQjMVMjOTAwMDk2MTAxIzFUIzEyNTYjTFMjOTAwMDc5MjIxI0xUIzEzMzIjUFUjODYjUlQjMSNDQSNVI1pFI1U4I1pCIyAgICAgIFU4I1BDIzEjRlIjOTAwMDk2MTAxI0ZUIzEyNTYjVE8jOTAwMDc5MjIxI1RUIzEzMzIj¶KRCC¶#VE#1#",
+          "cycle": {
+            "min": 600
+          }
+        },
+        {
+          "type": "journey",
+          "legs": [
+            {
+              "origin": {
+                "type": "stop",
+                "id": "900096101",
+                "name": "S+U Wittenau (Berlin)",
+                "location": {
+                  "type": "location",
+                  "id": "900096101",
+                  "latitude": 52.596451,
+                  "longitude": 13.335524
+                },
+                "products": {
+                  "suburban": true,
+                  "subway": true,
+                  "tram": false,
+                  "bus": true,
+                  "ferry": false,
+                  "express": false,
+                  "regional": false
+                },
+                "stationDHID": "de:11000:900096101"
+              },
+              "destination": {
+                "type": "stop",
+                "id": "900079221",
+                "name": "S+U Hermannstr. (Berlin)",
+                "location": {
+                  "type": "location",
+                  "id": "900079221",
+                  "latitude": 52.467546,
+                  "longitude": 13.431295
+                },
+                "products": {
+                  "suburban": true,
+                  "subway": true,
+                  "tram": false,
+                  "bus": true,
+                  "ferry": false,
+                  "express": false,
+                  "regional": false
+                },
+                "stationDHID": "de:11000:900079221"
+              },
+              "departure": "2024-10-03T13:06:00+02:00",
+              "plannedDeparture": "2024-10-03T13:06:00+02:00",
+              "departureDelay": 0,
+              "arrival": "2024-10-03T13:42:00+02:00",
+              "plannedArrival": "2024-10-03T13:42:00+02:00",
+              "arrivalDelay": 0,
+              "reachable": true,
+              "tripId": "1|57046|8|86|3102024",
+              "line": {
+                "type": "line",
+                "id": "u8",
+                "fahrtNr": "12036",
+                "name": "U8",
+                "public": true,
+                "adminCode": "BVU---",
+                "productName": "U",
+                "mode": "train",
+                "product": "subway",
+                "operator": {
+                  "type": "operator",
+                  "id": "berliner-verkehrsbetriebe",
+                  "name": "Berliner Verkehrsbetriebe"
+                },
+                "color": {
+                  "fg": "#fff",
+                  "bg": "#005b98"
+                }
+              },
+              "direction": "Hermannstraße",
+              "arrivalPlatform": "1",
+              "plannedArrivalPlatform": "1",
+              "arrivalPrognosisType": "prognosed",
+              "departurePlatform": "1",
+              "plannedDeparturePlatform": "1",
+              "departurePrognosisType": "prognosed",
+              "remarks": [
+                {
+                  "type": "hint",
+                  "code": "OPERATOR",
+                  "text": "BVG"
+                },
+                {
+                  "type": "hint",
+                  "code": "FK",
+                  "text": "Bicycle conveyance (S+U Wittenau (Berlin))"
+                },
+                {
+                  "type": "hint",
+                  "code": "FK",
+                  "text": "Bicycle conveyance (S+U Hermannstr. (Berlin))"
+                }
+              ],
+              "cycle": {
+                "min": 600,
+                "max": 600,
+                "nr": 13
+              }
+            }
+          ],
+          "refreshToken": "¶HKI¶T$A=1@O=S+U Wittenau (Berlin)@L=900096101@a=128@$A=1@O=S+U Hermannstr. (Berlin)@L=900079221@a=128@$202410031306$202410031342$      U8$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#0#SICT#0#AM#16433#AM2#0#RT#15#¶KCC¶I1ZFIzEjRVJHIzEjSElOIzAjRUNLIzEyMzA2fDEyMzA2fDEyMzQyfDEyMzQyfDB8MHwxNjV8MTIyOTd8MnwwfDEwfDB8MHwtMjE0NzQ4MzY0OCNHQU0jMzEwMjQxMzA2IwpaI1ZOIzEjU1QjMTcyNzczOTg0MyNQSSMwI1pJIzU3MDQ2I1RBIzgjREEjMzEwMjQjMVMjOTAwMDk2MTAxIzFUIzEzMDYjTFMjOTAwMDc5MjIxI0xUIzEzNDIjUFUjODYjUlQjMSNDQSNVI1pFI1U4I1pCIyAgICAgIFU4I1BDIzEjRlIjOTAwMDk2MTAxI0ZUIzEzMDYjVE8jOTAwMDc5MjIxI1RUIzEzNDIj¶KRCC¶#VE#1#",
+          "cycle": {
+            "min": 600
+          }
+        },
+        {
+          "type": "journey",
+          "legs": [
+            {
+              "origin": {
+                "type": "stop",
+                "id": "900096101",
+                "name": "S+U Wittenau (Berlin)",
+                "location": {
+                  "type": "location",
+                  "id": "900096101",
+                  "latitude": 52.596451,
+                  "longitude": 13.335524
+                },
+                "products": {
+                  "suburban": true,
+                  "subway": true,
+                  "tram": false,
+                  "bus": true,
+                  "ferry": false,
+                  "express": false,
+                  "regional": false
+                },
+                "stationDHID": "de:11000:900096101"
+              },
+              "destination": {
+                "type": "stop",
+                "id": "900079221",
+                "name": "S+U Hermannstr. (Berlin)",
+                "location": {
+                  "type": "location",
+                  "id": "900079221",
+                  "latitude": 52.467546,
+                  "longitude": 13.431295
+                },
+                "products": {
+                  "suburban": true,
+                  "subway": true,
+                  "tram": false,
+                  "bus": true,
+                  "ferry": false,
+                  "express": false,
+                  "regional": false
+                },
+                "stationDHID": "de:11000:900079221"
+              },
+              "departure": "2024-10-03T13:16:00+02:00",
+              "plannedDeparture": "2024-10-03T13:16:00+02:00",
+              "departureDelay": 0,
+              "arrival": "2024-10-03T13:52:00+02:00",
+              "plannedArrival": "2024-10-03T13:52:00+02:00",
+              "arrivalDelay": 0,
+              "reachable": true,
+              "tripId": "1|57046|9|86|3102024",
+              "line": {
+                "type": "line",
+                "id": "u8",
+                "fahrtNr": "12038",
+                "name": "U8",
+                "public": true,
+                "adminCode": "BVU---",
+                "productName": "U",
+                "mode": "train",
+                "product": "subway",
+                "operator": {
+                  "type": "operator",
+                  "id": "berliner-verkehrsbetriebe",
+                  "name": "Berliner Verkehrsbetriebe"
+                },
+                "color": {
+                  "fg": "#fff",
+                  "bg": "#005b98"
+                }
+              },
+              "direction": "Hermannstraße",
+              "arrivalPlatform": "1",
+              "plannedArrivalPlatform": "1",
+              "arrivalPrognosisType": "prognosed",
+              "departurePlatform": "1",
+              "plannedDeparturePlatform": "1",
+              "departurePrognosisType": "prognosed",
+              "remarks": [
+                {
+                  "type": "hint",
+                  "code": "OPERATOR",
+                  "text": "BVG"
+                },
+                {
+                  "type": "hint",
+                  "code": "FK",
+                  "text": "Bicycle conveyance (S+U Wittenau (Berlin))"
+                },
+                {
+                  "type": "hint",
+                  "code": "FK",
+                  "text": "Bicycle conveyance (S+U Hermannstr. (Berlin))"
+                }
+              ],
+              "cycle": {
+                "min": 600,
+                "max": 600,
+                "nr": 13
+              }
+            }
+          ],
+          "refreshToken": "¶HKI¶T$A=1@O=S+U Wittenau (Berlin)@L=900096101@a=128@$A=1@O=S+U Hermannstr. (Berlin)@L=900079221@a=128@$202410031316$202410031352$      U8$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#0#SICT#0#AM#16433#AM2#0#RT#15#¶KCC¶I1ZFIzEjRVJHIzEjSElOIzAjRUNLIzEyMzE2fDEyMzE2fDEyMzUyfDEyMzUyfDB8MHwxNjV8MTIzMDd8M3wwfDEwfDB8MHwtMjE0NzQ4MzY0OCNHQU0jMzEwMjQxMzE2IwpaI1ZOIzEjU1QjMTcyNzczOTg0MyNQSSMwI1pJIzU3MDQ2I1RBIzkjREEjMzEwMjQjMVMjOTAwMDk2MTAxIzFUIzEzMTYjTFMjOTAwMDc5MjIxI0xUIzEzNTIjUFUjODYjUlQjMSNDQSNVI1pFI1U4I1pCIyAgICAgIFU4I1BDIzEjRlIjOTAwMDk2MTAxI0ZUIzEzMTYjVE8jOTAwMDc5MjIxI1RUIzEzNTIj¶KRCC¶#VE#1#",
+          "cycle": {
+            "min": 600
+          }
+        }
+      ],
+      "refreshToken": "¶HKI¶T$A=1@O=S+U Wittenau (Berlin)@L=900096101@a=128@$A=1@O=S+U Hermannstr. (Berlin)@L=900079221@a=128@$202410030947$202410031024$      U8$$1$$$$$$¶KC¶#VE#2#CF#100#CA#0#CM#0#SICT#0#AM#16433#AM2#0#RT#15#¶KCC¶I1ZFIzEjRVJHIzEjSElOIzAjRUNLIzEyMTA3fDEyMTA3fDEyMTQ0fDEyMTQ0fDB8MHwxNjV8MTIxMDB8MXwwfDEwfDB8MHwtMjE0NzQ4MzY0OCNHQU0jMzEwMjQwOTQ3IwpaI1ZOIzEjU1QjMTcyNzczOTg0MyNQSSMwI1pJIzU3MDU4I1RBIzMjREEjMzEwMjQjMVMjOTAwMDk2MTAxIzFUIzk0NyNMUyM5MDAwNzkyMjEjTFQjMTAyNCNQVSM4NiNSVCMxI0NBI1UjWkUjVTgjWkIjICAgICAgVTgjUEMjMSNGUiM5MDAwOTYxMDEjRlQjOTQ3I1RPIzkwMDA3OTIyMSNUVCMxMDI0Iw==¶KRCC¶#VE#1#",
+      "cycle": {
+        "min": 540
+      }
+    }
+  ]
+}

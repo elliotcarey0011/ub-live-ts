@@ -38,7 +38,9 @@ describe('useLine hook', () => {
       timeout: 1500,
     });
 
-    expect(result.current.error).toEqual(error);
+    expect(result.current.error?.message).toContain(
+      'Failed to fetch line data'
+    );
 
     expect(result.current.data).toBeUndefined();
   });

@@ -1,9 +1,13 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, prettyDOM, waitFor } from '@testing-library/react';
 
 import { Line } from '../Line/Line';
 import { uEightNaturalPath } from '../../utils/paths';
 import { uEightStops } from '../../utils/stops';
+
+vi.mock('../Train/Train', () => ({
+  Train: () => <div>Mocked LineBuilder</div>,
+}));
 
 describe('LineBuilder Component', () => {
   it('renders stops on line on the screen', async () => {

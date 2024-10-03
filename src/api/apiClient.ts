@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const apiClient = axios.create({
-  baseURL: 'https://v6.vbb.transport.rest/',
+  baseURL: import.meta.env.VITE_ENV_MODE === 'test' ? 'http://localhost:3000' : 'https://v6.vbb.transport.rest/',
 });
 
 export const API_METHODS = {

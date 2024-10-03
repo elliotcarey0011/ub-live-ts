@@ -42,7 +42,6 @@ export const LineBuilder: React.FC<LineBuilderProps> = ({
 }) => {
   useEffect(() => {
     if (!path) {
-      console.error('path is null');
       return;
     }
     const linePath = path;

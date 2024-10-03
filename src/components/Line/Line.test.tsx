@@ -9,6 +9,10 @@ vi.mock('../LineBuilder/LineBuilder', () => ({
   LineBuilder: () => <div>Mocked LineBuilder</div>,
 }));
 
+vi.mock('../Train/Train', () => ({
+  Train: () => <div>Mocked LineBuilder</div>,
+}));
+
 describe('Line Component', () => {
   it('renders a line on the screen', () => {
     const { container } = render(

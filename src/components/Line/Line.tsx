@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { LineBuilder } from '../LineBuilder/LineBuilder';
+import { Train } from '../Train/Train';
 import { svgPathProperties } from 'svg-path-properties';
+
 interface Stop {
   id: string;
   name: string;
@@ -19,13 +21,14 @@ export const Line: React.FC<LineProps> = ({ path, stops, id, color }) => {
 
   const [renderLineBuilder, setRenderLineBuilder] = useState(false);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setRenderLineBuilder(true);
-    }, 500);
+  const firstStop = stops[0];
+  const lastStop = stops[stops.length - 1];
 
-    return () => clearTimeout(timer);
-  }, []);
+  useEffect(() => {
+    if (pathRef.current) {
+      setRenderLineBuilder(true);
+    }
+  }, [pathRef]);
 
   return (
     <div id={`train-line`} className="train-line" data-testid="line">
@@ -38,6 +41,7 @@ export const Line: React.FC<LineProps> = ({ path, stops, id, color }) => {
           stroke={color}
           strokeWidth="3"
         />
+        <Train firstStop={firstStop.id} lastStop={lastStop.id} />
         {renderLineBuilder && (
           <LineBuilder
             stops={stops}

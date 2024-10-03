@@ -17,7 +17,7 @@ export function useLine(): UseQueryResult<LineData> {
             const response = await apiClient.get<LineData>(`lines/17514_400`);
             return response.data;
         } catch (error) {
-            throw new Error('Failed to fetch line data');
+            throw new Error(`Failed to fetch line data with error: ${error}`);
         }
     };
 

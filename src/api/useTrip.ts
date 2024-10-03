@@ -1,11 +1,6 @@
 import { useQuery, UseQueryResult } from '@tanstack/react-query';
 import { apiClient } from './apiClient';
 
-type Trip = {
-    id: string;
-    name: string;
-};
-
 type Location = {
     type: string;
     id: string;
@@ -105,7 +100,7 @@ export function useTrip(tripId: number): UseQueryResult<Trip> {  // Change integ
             const response = await apiClient.get<Trip>(`trips/${tripId}`);
             return response.data;
         } catch (error) {
-            throw new Error('Failed to fetch trip data');
+            throw new Error(`Failed to fetch trip data with error: ${error}`);
         }
     };
 
