@@ -43,9 +43,16 @@ const Circle = React.forwardRef<SVGCircleElement, CircleProps>(
 );
 export const Train: React.FC<TrainProps> = ({ firstStop, lastStop }) => {
   const { data, isLoading, isError, refetch } = useJourney(firstStop, lastStop);
+  // console.log(data?.journeys.length);
   const circleRef = useRef<SVGCircleElement | null>(null);
+  const journeys = data?.journeys;
+  console.log(data);
+  console.log('jorney', journeys);
 
-  const leg = data?.journeys?.[0]?.legs?.[0];
+  const leg = journeys?.[0]?.legs?.[0];
+  const stopovers = leg?.stopovers;
+  console.log('stopovers', stopovers);
+
   const line = leg?.line?.id || '';
   const tripId = leg?.tripId || '';
   const idParts = tripId.toString().split('|');
@@ -90,6 +97,50 @@ export const Train: React.FC<TrainProps> = ({ firstStop, lastStop }) => {
     console.log('interrupt');
   };
 
+  const findCurrentStop = () => {
+    if (!stopovers || stopovers.length === 0) return null;
+
+    const nowUnix = Date.now(); // Current time in Unix time (milliseconds since epoch)
+
+    // Loop through stopovers to find the current stop
+    for (let i = 0; i < stopovers.length - 1; i++) {
+      const currentStopDepartureUnix = stopovers[i].departure
+        ? new Date(stopovers[i].departure).getTime()
+        : null;
+      const nextStopDepartureUnix = stopovers[i + 1].departure
+        ? new Date(stopovers[i + 1].departure).getTime()
+        : null;
+      // console.log('planned', currentStopDepartureUnix);
+      // console.log('plannednx', nextStopDepartureUnix);
+      // console.log('now', nowUnix);
+
+      // Check if the current time is between the departure times of the current and next stop
+      if (currentStopDepartureUnix && nextStopDepartureUnix) {
+        if (
+          nowUnix >= currentStopDepartureUnix &&
+          nowUnix < nextStopDepartureUnix
+        ) {
+          return stopovers[i];
+        }
+      }
+    }
+
+    // If we are past the last stop, return the last stop
+    if (stopovers[stopovers.length - 1].departure) {
+      const lastStopDepartureUnix = new Date(
+        stopovers[stopovers.length - 1].departure
+      ).getTime();
+      if (nowUnix >= lastStopDepartureUnix) {
+        return stopovers[stopovers.length - 1];
+      }
+    }
+
+    return null;
+  };
+
+  const currentStop = findCurrentStop();
+  console.log('current', currentStop?.stop);
+
   useEffect(() => {
     if (!circleRef.current) {
       return;
@@ -123,6 +174,7 @@ export const Train: React.FC<TrainProps> = ({ firstStop, lastStop }) => {
       tl.kill();
     };
   }, [leg]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -136,15 +188,18 @@ export const Train: React.FC<TrainProps> = ({ firstStop, lastStop }) => {
     );
   }
   return (
-    <Circle
-      id={id}
-      line={line}
-      cx={`${getStopCoordinates(firstStop)?.cx}`}
-      cy={`${getStopCoordinates(firstStop)?.cy}`}
-      destination={destination}
-      plannedArrival={plannedArrival}
-      plannedDeparture={plannedDeparture}
-      ref={circleRef}
-    />
+    <>
+      <Circle
+        id={id}
+        line={line}
+        cx={`${getStopCoordinates(currentStop?.stop.id)?.cx}`}
+        cy={`${getStopCoordinates(currentStop?.stop.id)?.cy}`}
+        destination={destination}
+        plannedArrival={plannedArrival}
+        plannedDeparture={plannedDeparture}
+        ref={circleRef}
+      />
+      <p>Current Stop: {currentStop?.stop?.name || 'Not available'}</p>
+    </>
   );
 };

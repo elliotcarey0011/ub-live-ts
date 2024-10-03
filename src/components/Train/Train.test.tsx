@@ -25,7 +25,7 @@ describe('Train Tests', () => {
       async () => {
         const train = renderer.container.querySelector('#train_3102024_u8');
         expect(train).toBeInTheDocument();
-        console.log(prettyDOM(renderer.container));
+        // console.log(prettyDOM(renderer.container));
       },
       { timeout: 200 }
     );

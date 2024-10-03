@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { Train } from '../Train/Train';
 import { gsap } from 'gsap';
 
 interface Stop {
@@ -40,6 +41,8 @@ export const LineBuilder: React.FC<LineBuilderProps> = ({
   id,
   properties,
 }) => {
+  const firstStop = stops[0];
+  const lastStop = stops[stops.length - 1];
   useEffect(() => {
     if (!path) {
       return;
@@ -110,5 +113,5 @@ export const LineBuilder: React.FC<LineBuilderProps> = ({
     updateStopPositions();
   }, [path, stops]);
 
-  return null;
+  return <Train firstStop={firstStop.id} lastStop={lastStop.id} />;
 };
