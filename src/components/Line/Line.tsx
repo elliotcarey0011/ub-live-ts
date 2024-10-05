@@ -28,7 +28,7 @@ export const Line: React.FC<LineProps> = ({ path, stops, id, color }) => {
 
   return (
     <div id={`train-line`} className="train-line" data-testid="line">
-      <svg width="100%" height="100%" viewBox="250 250 457 140" id="svg">
+      <svg width="100%" height="100%" id="svg">
         <path
           id={`line_${id}`}
           ref={pathRef}

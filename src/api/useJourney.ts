@@ -7,12 +7,13 @@ export function useJourney(
   lastStop: string
 ): UseQueryResult<Journey> {
   const getJourneyFn = async (): Promise<Journey> => {
+    console.log("log")
     try {
       const isTesting = import.meta.env.VITE_ENV_MODE === 'test';
 
       const initialUrl = isTesting
         ? `journeys/1`
-        : `journeys?from=${firstStop}&to=${lastStop}&suburban=false&tram=false&bus=false&ferry=false&express=false&regional=false&results=12&stopovers=true`;
+        : `journeys?from=${firstStop}&to=${lastStop}&suburban=false&tram=false&bus=false&ferry=false&express=false&regional=false&results=12&stopovers=true&departure=1727886454`;
       const initialResponse = await apiClient.get<Journey>(initialUrl);
       const initialData = initialResponse.data;
 

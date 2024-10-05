@@ -1,7 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { useJourney } from '../../api/useJourney';
 import { uEightStops } from '../../utils/stops';
+import { useTime } from '../../TimeContext';
+import { getStopCoordinates } from './getStopCoordinates';
+import { getCurrentStop } from './getCurrentStop';
+import useSetState from '../../hooks/useSetState';
 
 interface TrainProps {
   firstStop: string;
@@ -18,74 +22,35 @@ interface CircleProps {
   plannedDeparture: string;
 }
 
-const Circle = React.forwardRef<SVGCircleElement, CircleProps>(
-  (
-    { id, line, cx, cy, destination, plannedArrival, plannedDeparture },
-    ref
-  ) => (
-    <circle
-      id={`train_${id}_${line}`}
-      fill="red"
-      r="11"
-      cx={cx}
-      cy={cy}
-      ref={ref}
-    >
-      <title>
-        <div>
-          Destination: {destination}
-          Planned Arrival: {plannedArrival}
-          Planned Departure: {plannedDeparture}
-        </div>
-      </title>
-    </circle>
-  )
+const Circle: React.FC<CircleProps> = ({
+  id,
+  line,
+  cx,
+  cy,
+  destination,
+  plannedArrival,
+  plannedDeparture,
+}) => (
+  <circle id={`${id}`} fill="red" r="11" cx={cx} cy={cy}>
+    <title>
+      <div>
+        Destination: {destination}
+        Planned Departure: {plannedDeparture}
+        Planned Arrival: {plannedArrival}
+      </div>
+    </title>
+  </circle>
 );
+
 export const Train: React.FC<TrainProps> = ({ firstStop, lastStop }) => {
   const { data, isLoading, isError, refetch } = useJourney(firstStop, lastStop);
-  // console.log(data?.journeys.length);
-  const circleRef = useRef<SVGCircleElement | null>(null);
-  const journeys = data?.journeys;
-  // console.log(data);
-  // console.log('jorney', journeys);
+  const { dataNorth } = useJourney(lastStop, firstStop);
+  const [state, setState] = useState();
 
-  const leg = journeys?.[0]?.legs?.[0];
-  const stopovers = leg?.stopovers;
-  // console.log('stopovers', stopovers);
+  const circleRefs = useRef<Array<SVGCircleElement | null>>([]);
+  const currentTime = useTime();
 
-  const line = leg?.line?.id || '';
-  const tripId = leg?.tripId || '';
-  const idParts = tripId.toString().split('|');
-  const id = idParts.length > 4 ? idParts[4] : 'default-id';
-
-  const destination = leg?.destination?.name || '';
-  const plannedArrival = leg?.plannedArrival || '';
-  const plannedDeparture = leg?.plannedDeparture || '';
-
-  const departure = leg?.departure ? new Date(leg.departure) : null;
-  const arrival = leg?.arrival ? new Date(leg.arrival) : null;
-
-  const durationInSeconds =
-    departure && arrival ? (arrival.getTime() - departure.getTime()) / 1000 : 0;
-
-  const getStopCoordinates = (
-    stopId: string
-  ): { cx: number; cy: number } | null => {
-    const circle = document.getElementById(
-      `stop_${stopId}_u8`
-    ) as SVGCircleElement | null;
-
-    if (circle) {
-      const cx = circle.getAttribute('cx');
-      const cy = circle.getAttribute('cy');
-
-      if (cx !== null && cy !== null) {
-        return { cx: parseFloat(cx), cy: parseFloat(cy) };
-      }
-    }
-
-    return null;
-  };
+  const journeys = data?.journeys || [];
 
   const onComplete = () => {
     console.log('complete');
@@ -93,88 +58,55 @@ export const Train: React.FC<TrainProps> = ({ firstStop, lastStop }) => {
   const onStart = () => {
     console.log('start');
   };
-  const onInterrupt = () => {
-    console.log('interrupt');
-  };
 
-  const findCurrentStop = () => {
-    if (!stopovers || stopovers.length === 0) return null;
-
-    const nowUnix = Date.now();
-
-    for (let i = 0; i < stopovers.length - 1; i++) {
-      const currentStopDepartureUnix = stopovers[i].departure
-        ? new Date(stopovers[i].departure).getTime()
-        : null;
-      const nextStopDepartureUnix = stopovers[i + 1].departure
-        ? new Date(stopovers[i + 1].departure).getTime()
-        : null;
-
-      if (currentStopDepartureUnix && nextStopDepartureUnix) {
-        if (
-          nowUnix >= currentStopDepartureUnix &&
-          nowUnix < nextStopDepartureUnix
-        ) {
-          return stopovers[i];
-        }
-      }
-    }
-
-    // If we are past the last stop, return the last stop
-    if (stopovers[stopovers.length - 1].departure) {
-      const lastStopDepartureUnix = new Date(
-        stopovers[stopovers.length - 1].departure
-      ).getTime();
-      if (nowUnix >= lastStopDepartureUnix) {
-        return stopovers[stopovers.length - 1];
-      }
-    }
-
-    return null;
-  };
-
-  const currentStop = findCurrentStop();
-
-  const currentStopIndex = uEightStops.findIndex(
-    (stop) => stop.id === currentStop?.stop?.id
-  );
   useEffect(() => {
-    if (!circleRef.current) {
-      return;
-    }
+    if (!circleRefs.current) return;
+    // setState(data);
 
-    const tl = gsap.timeline({ repeatDelay: 1 });
+    // Loop through each journey and create a separate GSAP timeline for each one
+    journeys.forEach((journey, index) => {
+      const leg = journey?.legs?.[0];
 
-    if (currentStopIndex !== -1) {
-      uEightStops.slice(currentStopIndex).forEach((stop) => {
-        const position = getStopCoordinates(Number(stop.id));
-        if (!position) {
-          return;
-        }
+      const stopovers = leg?.stopovers;
+      const currentStop = getCurrentStop(stopovers, currentTime);
+      const currentStopIndex = uEightStops.findIndex(
+        (stop) => stop.id === currentStop?.stop?.id
+      );
 
-        const animationDuration = Math.min(
-          Math.floor(
-            durationInSeconds / (uEightStops.length - currentStopIndex)
-          ),
-          300
-        );
+      if (currentStopIndex !== -1) {
+        const tl = gsap.timeline({ repeatDelay: 1 }); // Create a new timeline for each journey
 
-        tl.to(`#train_${id}_${line}`, {
-          cx: position.cx,
-          cy: position.cy,
-          duration: animationDuration,
-          delay: 1,
-          onComplete: onComplete,
-          onStart: onStart,
-          onInterrupt: onInterrupt,
+        uEightStops.slice(currentStopIndex).forEach((stop) => {
+          const position = getStopCoordinates(Number(stop.id));
+          if (!position) return;
+
+          const durationInSeconds =
+            leg?.departure && leg?.arrival
+              ? (new Date(leg.arrival).getTime() -
+                  new Date(leg.departure).getTime()) /
+                1000
+              : 0;
+
+          const animationDuration = Math.min(
+            Math.floor(
+              durationInSeconds / (uEightStops.length - currentStopIndex)
+            ),
+            300
+          );
+
+          // Use index to target each circle uniquely
+          tl.to(`#train_${index}_${leg.line.id}`, {
+            cx: position.cx,
+            cy: position.cy,
+            duration: animationDuration,
+            delay: 1,
+            onComplete: onComplete,
+            onStart: onStart,
+          });
         });
-      });
-    }
-
-    return () => {
-      tl.kill();
-    };
-  }, [leg]);
+      }
+    });
+  }, [journeys]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -188,19 +120,39 @@ export const Train: React.FC<TrainProps> = ({ firstStop, lastStop }) => {
       </div>
     );
   }
+
   return (
     <>
-      <Circle
-        id={id}
-        line={line}
-        cx={`${getStopCoordinates(currentStop?.stop.id)?.cx}`}
-        cy={`${getStopCoordinates(currentStop?.stop.id)?.cy}`}
-        destination={destination}
-        plannedArrival={plannedArrival}
-        plannedDeparture={plannedDeparture}
-        ref={circleRef}
-      />
-      <p>Current Stop: {currentStop?.stop?.name || 'Not available'}</p>
+      {journeys.map((journey, index) => {
+        const leg = journey?.legs?.[0];
+        const stopovers = leg.stopovers;
+
+        const line = leg?.line?.id || '';
+        const destination = leg?.destination?.name || '';
+        const plannedArrival = leg?.plannedArrival || '';
+        const plannedDeparture = leg?.plannedDeparture || '';
+
+        const currentStop = getCurrentStop(stopovers, currentTime);
+        const position = getStopCoordinates(currentStop?.stop?.id || '');
+
+        return (
+          <React.Fragment key={index}>
+            <Circle
+              id={`train_${index}_${line}`}
+              line={line}
+              cx={`${position?.cx || 0}`}
+              cy={`${position?.cy || 0}`}
+              destination={destination}
+              plannedArrival={plannedArrival}
+              plannedDeparture={plannedDeparture}
+            />
+            <p>Current Stop: {currentStop?.stop?.name || 'Not available'}</p>
+            <div>
+              <h4>{destination}</h4>
+            </div>
+          </React.Fragment>
+        );
+      })}
     </>
   );
 };

@@ -23,7 +23,7 @@ describe('Train Tests', () => {
 
     await waitFor(
       async () => {
-        const train = renderer.container.querySelector('#train_3102024_u8');
+        const train = renderer.container.querySelector('#train_1_u8');
         expect(train).toBeInTheDocument();
         // console.log(prettyDOM(renderer.container));
       },
